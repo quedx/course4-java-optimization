@@ -1,22 +1,20 @@
-package com.quedx.course4.ch2;
+package com.quedx.course4.chx;
 
 import java.util.UUID;
 
-public class Vehicle {
-   private final String make;
-   private final String model;
-   private final String vin;
-   private final String engine;
-   private int hashCode_;
+public class MutableVehicle {
+   private String make;
+   private String model;
+   private String vin;
+   private String engine;
 
-   public Vehicle(String make, String model, String engine) {
+   public MutableVehicle(String make, String model, String engine) {
       super();
       this.make = make;
       this.model = model;
-      
+
       this.vin = UUID.randomUUID().toString();
       this.engine = engine;
-      this.hashCode_ = -1;
    }
 
    public String getMake() {
@@ -35,8 +33,24 @@ public class Vehicle {
       return engine;
    }
 
-   public Vehicle changeEngine(String newEngine) {
-      return new Vehicle(this.make, this.model, newEngine);
+   public void setMake(String make) {
+      this.make = make;
+   }
+
+   public void setModel(String model) {
+      this.model = model;
+   }
+
+   public void setVin(String vin) {
+      this.vin = vin;
+   }
+
+   public void setEngine(String engine) {
+      this.engine = engine;
+   }
+
+   public MutableVehicle changeEngine(String newEngine) {
+      return new MutableVehicle(this.make, this.model, newEngine);
    }
 
    @Override
@@ -56,19 +70,13 @@ public class Vehicle {
 
    @Override
    public int hashCode() {
-      if (this.hashCode_ != -1)
-         return this.hashCode_;
-      
       final int prime = 31;
       int result = 1;
       result = prime * result + ((engine == null) ? 0 : engine.hashCode());
       result = prime * result + ((make == null) ? 0 : make.hashCode());
       result = prime * result + ((model == null) ? 0 : model.hashCode());
       result = prime * result + ((vin == null) ? 0 : vin.hashCode());
-      
-      this.hashCode_ = result;
-      
-      return this.hashCode_;
+      return result;
    }
 
    @Override
@@ -79,7 +87,7 @@ public class Vehicle {
          return false;
       if (getClass() != obj.getClass())
          return false;
-      Vehicle other = (Vehicle) obj;
+      MutableVehicle other = (MutableVehicle) obj;
       if (engine == null) {
          if (other.engine != null)
             return false;
@@ -103,8 +111,4 @@ public class Vehicle {
       return true;
    }
 
-
-
-   
-   
 }

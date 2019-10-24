@@ -1,4 +1,4 @@
-package com.quedx.course4.ch2;
+package com.quedx.course4.chx;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,29 +6,29 @@ import java.util.List;
 
 import com.quedx.course4.common.Util;
 
-public class NoHashCodeCachingDemo {
+public class HashCodeCachingDemo {
 
-   HashMap<MutableVehicle, String> ownerShipRegistry;
-   List<MutableVehicle> vehicleList;
+   HashMap<Vehicle, String> ownerShipRegistry;
+   List<Vehicle> vehicleList;
 
-   public MutableVehicle createHondaVechile() {
-      return new MutableVehicle("Honda", "Accord", "V6");
+   public Vehicle createHondaVechile() {
+      return new Vehicle("Honda", "Accord", "V6");
    }
 
-   public MutableVehicle createBWMVechile() {
-      return new MutableVehicle("BMW", "Series 6", "V8");
+   public Vehicle createBWMVechile() {
+      return new Vehicle("BMW", "Series 6", "V8");
    }
 
-   public MutableVehicle createToyotaVechile() {
-      return new MutableVehicle("Tyt", "Camry", "V6");
+   public Vehicle createToyotaVechile() {
+      return new Vehicle("Tyt", "Camry", "V6");
    }
 
-   public void addMutableVehicles(int count) {
+   public void addVehicles(int count) {
       ownerShipRegistry = new HashMap();
       vehicleList = new ArrayList(count);
 
       for (int i = 0; i < count; ++i) {
-         MutableVehicle v = createBWMVechile();
+         Vehicle v = createBWMVechile();
          ownerShipRegistry.put(v, Util.getRandomString("S", 4));
          vehicleList.add(v);
          v = createHondaVechile();
@@ -45,7 +45,7 @@ public class NoHashCodeCachingDemo {
    }
 
    public void search() {
-      for (MutableVehicle v : vehicleList) {
+      for (Vehicle v : vehicleList) {
          ownerShipRegistry.get(v);
          if (v == null) {
             Util.getLogger().info("not found");
@@ -54,8 +54,8 @@ public class NoHashCodeCachingDemo {
    }
 
    public static void main(String[] args) {
-      NoHashCodeCachingDemo obj = new NoHashCodeCachingDemo();
-      obj.addMutableVehicles(1000000);
+      HashCodeCachingDemo obj = new HashCodeCachingDemo();
+      obj.addVehicles(1000000);
 
       Long duration = Util.getExecutionTime(obj, "search");
 

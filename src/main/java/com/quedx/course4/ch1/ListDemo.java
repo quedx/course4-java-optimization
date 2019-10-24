@@ -10,11 +10,9 @@ import com.quedx.course4.common.Util;
 
 public class ListDemo {
 
-   String listName;
    List<Integer> list;
 
-   ListDemo(String listName, List<Integer> intList) {
-      this.listName = listName;
+   ListDemo(List<Integer> intList) {
       this.list = intList;
    }
 
@@ -59,17 +57,17 @@ public class ListDemo {
    }
 
    /**
-    * verifyAddElements
+    * verify
     */
    public static void verify() {
       int elements = 100000;
       long duration;
       List<String> executionTimeList = new ArrayList();
 
-      ListDemo arrayListDemo = new ListDemo("ArrayList", new ArrayList<Integer>());
-      ListDemo arrayListFixedDemo = new ListDemo("ArrayList Fixed", new ArrayList<Integer>(elements));
-      ListDemo linkedListDemo = new ListDemo("LinkedList", new LinkedList<Integer>());
-      ListDemo copyOnWriteArrayListDemo = new ListDemo("CopyOnWriteArrayList", new CopyOnWriteArrayList<Integer>());
+      ListDemo arrayListDemo = new ListDemo(new ArrayList<Integer>());
+      ListDemo arrayListFixedDemo = new ListDemo(new ArrayList<Integer>(elements));
+      ListDemo linkedListDemo = new ListDemo(new LinkedList<Integer>());
+      ListDemo copyOnWriteArrayListDemo = new ListDemo(new CopyOnWriteArrayList<Integer>());
 
       // --------------------------------------------
       String methodName = "addElements";

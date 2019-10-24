@@ -1,4 +1,4 @@
-package com.quedx.course4.ch2;
+package com.quedx.course4.chx;
 
 import com.quedx.course4.common.Util;
 
