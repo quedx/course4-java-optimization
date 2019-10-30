@@ -11,12 +11,25 @@ public class ReflectionUtil {
     * @param methodName
     * @throws Exception
     */
+   /*
    public static void invokeStaticMethod(Class srcClass, String methodName) throws Exception {
 
       Class[] c = {};
       Method method = srcClass.getDeclaredMethod(methodName, c);
       Object[] noParams = {};
       method.invoke(null, noParams);
+   }
+   */
+   
+   public static void invokeStaticMethod(Class srcClass, String methodName, Object... methodArgs) throws Exception {
+      Class[] classArgs = new Class[methodArgs.length];
+      int i = 0;
+      for (Object methodArg : methodArgs) {
+         classArgs[i++] = methodArg.getClass();
+      }
+      Method method = srcClass.getMethod(methodName, classArgs);
+      method.invoke(null, methodArgs);
+      
    }
 
    /**
@@ -72,5 +85,7 @@ public class ReflectionUtil {
       }
 
    }
+
+
 
 }

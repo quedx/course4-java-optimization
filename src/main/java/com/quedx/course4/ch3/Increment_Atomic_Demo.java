@@ -1,24 +1,19 @@
 package com.quedx.course4.ch3;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.quedx.course4.common.Util;
 
-public class Increment_Automic_Demo {
+public class Increment_Atomic_Demo {
 
    private static final int MAX_THREAD_COUNT = 100;
-   WebsiteActivity counter;
+   WebsiteActivity1 counter;
    ExecutorService executorService;
 
-   Increment_Automic_Demo() {
-      counter = new WebsiteActivity(1000_000);
+   Increment_Atomic_Demo() {
+      counter = new WebsiteActivity1(1000_000);
       executorService = Executors.newFixedThreadPool(MAX_THREAD_COUNT);
    }
 
@@ -30,21 +25,9 @@ public class Increment_Automic_Demo {
     */
    public void doProcess() throws Exception {
 
-      List<Future<String>> futureList = new ArrayList(MAX_THREAD_COUNT);
       for (int i = 0; i < MAX_THREAD_COUNT; ++i) {
-         Future<String> f = executorService.submit(counter);
-         futureList.add(f);
+         executorService.execute(counter);
       }
-
-      // Get the return status of each thread
-      futureList.stream().forEach(f -> {
-         try {
-            f.get();
-
-         } catch (Exception e) {
-            e.printStackTrace();
-         }
-      });
 
       executorService.shutdown();
 
@@ -59,11 +42,12 @@ public class Increment_Automic_Demo {
    // Main
    public static void main(String[] args) throws InterruptedException {
 
-      Increment_Automic_Demo obj = new Increment_Automic_Demo();
+      Increment_Atomic_Demo obj = new Increment_Atomic_Demo();
       String methodName = "doProcess";
       Long duration = Util.getExecutionTime(obj, methodName);
 
-      Util.getLogger(obj.getClass()).info(String.format("execution time for [%s] ==> %10.6f ms", methodName, Util.nanoToMs(duration)));
+      Util.getLogger(obj.getClass())
+            .info(String.format("execution time for [%s] ==> %10.6f ms", methodName, Util.nanoToMs(duration)));
    }
 }
 
@@ -71,11 +55,11 @@ public class Increment_Automic_Demo {
  * Performs increment operation <maxLimit> times
  *
  */
-class WebsiteActivity implements Callable<String> {
+class WebsiteActivity1 implements Runnable {
    private AtomicInteger count = new AtomicInteger();
    private int maxLimit;
 
-   WebsiteActivity(int maxLimit) {
+   WebsiteActivity1(int maxLimit) {
       this.maxLimit = maxLimit;
    }
 
@@ -84,11 +68,10 @@ class WebsiteActivity implements Callable<String> {
    }
 
    @Override
-   public String call() throws Exception {
+   public void run() {
       for (int i = 0; i < this.maxLimit; ++i) {
          count.getAndIncrement();
       }
-      return null;
    }
 
 }

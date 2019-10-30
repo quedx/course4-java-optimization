@@ -66,7 +66,34 @@ public class Util {
 
       return Duration.between(start, end).toNanos();
    }
+   
+   
+   /**
+    * Invoke method
+    * 
+    * @param obj
+    * @param methodName
+    * @param methodArgs
+    * @return execution time in nano seconds
+    */
+   public static long getExecutionTime(Class srcClass, String methodName, Object... methodArgs) {
 
+      Instant start = Instant.now();
+
+      // Invoke method to test
+      try {
+         ReflectionUtil.invokeStaticMethod(srcClass, methodName, methodArgs);
+      } catch (Exception e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
+      Instant end = Instant.now();
+
+      return Duration.between(start, end).toNanos();
+   }
+
+
+   
    /**
     * Invoke method
     * 

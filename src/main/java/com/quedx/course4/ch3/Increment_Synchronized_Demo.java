@@ -1,13 +1,7 @@
 package com.quedx.course4.ch3;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import com.quedx.course4.common.Util;
 
@@ -30,21 +24,9 @@ public class Increment_Synchronized_Demo {
     */
    public void doProcess() throws Exception {
 
-      List<Future<String>> futureList = new ArrayList(MAX_THREAD_COUNT);
       for (int i = 0; i < MAX_THREAD_COUNT; ++i) {
-         Future<String> f = executorService.submit(counter);
-         futureList.add(f);
+         executorService.execute(counter);
       }
-
-      // Get the return status of each thread
-      futureList.stream().forEach(f -> {
-         try {
-            f.get();
-
-         } catch (Exception e) {
-            e.printStackTrace();
-         }
-      });
 
       executorService.shutdown();
 
@@ -63,7 +45,8 @@ public class Increment_Synchronized_Demo {
       String methodName = "doProcess";
       Long duration = Util.getExecutionTime(obj, methodName);
 
-      Util.getLogger(obj.getClass()).info(String.format("execution time for [%s] ==> %10.6f ms", methodName, Util.nanoToMs(duration)));
+      Util.getLogger(obj.getClass())
+            .info(String.format("execution time for [%s] ==> %10.6f ms", methodName, Util.nanoToMs(duration)));
    }
 }
 
@@ -71,7 +54,7 @@ public class Increment_Synchronized_Demo {
  * Performs increment operation <maxLimit> times
  *
  */
-class WebsiteAcitivity2 implements Callable<String> {
+class WebsiteAcitivity2 implements Runnable {
    private Integer count = 0;
    private int maxLimit;
 
@@ -82,17 +65,17 @@ class WebsiteAcitivity2 implements Callable<String> {
    public int getCount() {
       return this.count;
    }
-   
+
    public synchronized void increment() {
       this.count += 1;
    }
 
    @Override
-   public String call() throws Exception {
+   public void run() {
       for (int i = 0; i < this.maxLimit; ++i) {
          increment();
       }
-      return null;
+
    }
 
 }
